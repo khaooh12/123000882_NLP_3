@@ -78,6 +78,8 @@ def safe_sentiment(text: str) -> str:
     """
     try:
         res = sentiment(text)
+        if not res or res == "None":
+            return "Không xác định (Neutral/Mixed)"
         if isinstance(res, (list, tuple)):
             if len(res) > 0:
                 return str(res[0])
