@@ -18,7 +18,6 @@ from collections import Counter
 import streamlit as st
 
 # TODO 1: Import word_tokenize và sentiment từ thư viện underthesea
-# from underthesea import ...
 from underthesea import word_tokenize, sentiment
 
 # ========= CẤU HÌNH TỪ VỰNG MẪU =========
@@ -67,35 +66,16 @@ def simple_tokenize(text: str):
 def underthesea_tokenize(text: str):
     """
     TODO 2: Dùng word_tokenize từ underthesea để tách từ tiếng Việt.
-
-    Gợi ý:
-      - word_tokenize(text) trả về list các token, ví dụ: ['màn_hình', 'đẹp', 'quá']
-      - word_tokenize(text, format="text") trả về chuỗi: 'màn_hình đẹp quá'
-
-    Yêu cầu: Trả về tuple (tokens_list, tokens_text)
-      - tokens_list: list token (dạng list)
-      - tokens_text: chuỗi token (dạng format="text")
     """
-    # ---- VIẾT CODE TẠI ĐÂY ----
     tokens_list = word_tokenize(text)
     tokens_text = word_tokenize(text, format="text")
-    # ----------------------------
     return tokens_list, tokens_text
 
 
 def safe_sentiment(text: str) -> str:
     """
     TODO 3: Gọi underthesea.sentiment(text) để lấy nhãn cảm xúc.
-
-    Gợi ý:
-      - sentiment(text) có thể trả về 'positive', 'negative', 'neutral'
-        hoặc list/tuple tuỳ phiên bản.
-      - Cần xử lý trường hợp trả về list/tuple: lấy phần tử đầu tiên.
-      - Bọc trong try/except để tránh crash nếu chưa cài model.
-
-    Yêu cầu: Trả về string nhãn sentiment, ví dụ: 'positive', 'negative'.
     """
-    # ---- VIẾT CODE TẠI ĐÂY ----
     try:
         res = sentiment(text)
         if isinstance(res, (list, tuple)):
@@ -105,7 +85,6 @@ def safe_sentiment(text: str) -> str:
         return str(res)
     except Exception as e:
         return f"lỗi module/model: {e}"
-    # ----------------------------
 
 
 def detect_prefixes(tokens, prefixes: dict) -> Counter:
@@ -209,18 +188,10 @@ with col_right:
         st.markdown("**Cách 2 — underthesea `word_tokenize`:**")
 
         # TODO 4a: Gọi underthesea_tokenize(text) và hiển thị kết quả.
-        #
-        # Gợi ý:
-        #   tokens_list, tokens_text = underthesea_tokenize(text)
-        #   st.code(" | ".join(tokens_list))
-        #   st.write("Dạng text:", tokens_text)
-        #
-        # ---- VIẾT CODE TẠI ĐÂY ----
         tokens_list, tokens_text = underthesea_tokenize(norm_text)
         st.code(" | ".join(tokens_list))
         st.write("Dạng text:", tokens_text)
         tokens_ut = tokens_list
-        # ----------------------------
 
         # ============================================================
         # PHẦN B — Tiền tố Hán-Việt (dùng token từ underthesea)
@@ -315,15 +286,8 @@ with col_right:
         st.markdown("#### 🤖 Cách 2 — underthesea `sentiment()`")
 
         # TODO 4b: Gọi safe_sentiment(text) và hiển thị kết quả.
-        #
-        # Gợi ý:
-        #   senti_label = safe_sentiment(text)
-        #   st.info(f"**Nhãn underthesea:** `{senti_label}`")
-        #
-        # ---- VIẾT CODE TẠI ĐÂY ----
         senti_label = safe_sentiment(norm_text)
         st.info(f"**Nhãn underthesea:** `{senti_label}`")
-        # ----------------------------
 
         # --- So sánh 2 cách ---
         st.markdown("---")
